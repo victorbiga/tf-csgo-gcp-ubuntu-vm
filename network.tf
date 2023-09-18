@@ -1,3 +1,22 @@
+####################
+## Network - Main ##
+####################
+
+# create VPC
+resource "google_compute_network" "vpc" {
+  name                    = "${lower(var.company)}-${lower(var.app_name)}-${var.environment}-vpc"
+  auto_create_subnetworks = "false"
+  routing_mode            = "GLOBAL"
+}
+
+# create public subnet
+resource "google_compute_subnetwork" "network_subnet" {
+  name          = "${lower(var.company)}-${lower(var.app_name)}-${var.environment}-subnet"
+  ip_cidr_range = var.network-subnet-cidr
+  network       = google_compute_network.vpc.name
+  region        = var.gcp_region
+}
+
 ###################################
 ## Network Firewall Rules - Main ##
 ###################################
@@ -10,9 +29,9 @@ resource "google_compute_firewall" "allow-http" {
     protocol = "tcp"
     ports    = ["80"]
   }
-  
+
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["http"] 
+  target_tags = ["http"]
 }
 
 # allow https
@@ -25,7 +44,7 @@ resource "google_compute_firewall" "allow-https" {
   }
 
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["https"] 
+  target_tags = ["https"]
 }
 
 # allow ssh
@@ -40,4 +59,3 @@ resource "google_compute_firewall" "allow-ssh" {
   source_ranges = ["0.0.0.0/0"]
   target_tags = ["ssh"]
 }
-

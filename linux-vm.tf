@@ -22,7 +22,7 @@ resource "google_compute_instance" "vm_instance_public" {
 
   boot_disk {
     initialize_params {
-      image = var.ubuntu_2004_sku
+      image = var.ubuntu_pro_2204_sku
     }
   }
 
@@ -33,4 +33,20 @@ resource "google_compute_instance" "vm_instance_public" {
     subnetwork    = google_compute_subnetwork.network_subnet.name
     access_config { }
   }
-} 
+}
+
+###########################
+## GCP Linux VM - Output ##
+###########################
+
+output "vm-name" {
+  value = google_compute_instance.vm_instance_public.name
+}
+
+output "vm-external-ip" {
+  value = google_compute_instance.vm_instance_public.network_interface.0.access_config.0.nat_ip
+}
+
+output "vm-internal-ip" {
+  value = google_compute_instance.vm_instance_public.network_interface.0.network_ip
+}
