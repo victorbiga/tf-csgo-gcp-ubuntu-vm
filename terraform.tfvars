@@ -5,7 +5,7 @@ app_domain  = "treidbot.com"
 environment = "dev" # Dev, Test, Prod, etc
 
 # GCP Settings
-gcp_project   = "com-ridedott-test"
+gcp_project   = "com-treidbot"
 gcp_region    = "europe-west4"
 gcp_zone      = "europe-west4-b"
 
