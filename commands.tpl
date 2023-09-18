@@ -5,9 +5,12 @@ sudo systemctl start apache2
 sudo systemctl enable apache2
 
 # Install CSGO dependencies
-sudo sudo apt install curl wget file tar bzip2 gzip unzip bsdmainutils python3 util-linux ca-certificates binutils bc jq tmux netcat lib32gcc1 lib32stdc++6 libsdl2-2.0-0:i386 -yq
+sudo dpkg --add-architecture i386; sudo apt update
+sudo apt install curl wget file tar bzip2 gzip unzip bsdmainutils python3 util-linux ca-certificates binutils bc jq tmux netcat lib32gcc-s1 lib32stdc++6 libsdl2-2.0-0:i386 -yq
 
 # TODO: Implement non-interactive EULA Accept.
+# echo steamcmd steam/question select "Ok" | sudo debconf-set-selections # this did not work
+# echo -e 'steamcmd\tsteam/question select\tOK' | sudo debconf-set-selections # this is with tab but still did not work
 #sudo apt install steamcmd -yq
 
 # Set iptables to allow port 27015
