@@ -7,7 +7,8 @@ sudo systemctl enable apache2
 # Install CSGO dependencies
 sudo sudo apt install curl wget file tar bzip2 gzip unzip bsdmainutils python3 util-linux ca-certificates binutils bc jq tmux netcat lib32gcc1 lib32stdc++6 libsdl2-2.0-0:i386 -yq
 
-# TODO: Implement non-interactive EULA Accept. sudo apt install steamcmd -yq
+# TODO: Implement non-interactive EULA Accept.
+#sudo apt install steamcmd -yq
 
 # Set iptables to allow port 27015
 #iptables -I INPUT 6 -m state --state NEW -p tcp --dport 27015 -j ACCEPT
@@ -33,8 +34,8 @@ sudo sudo apt install curl wget file tar bzip2 gzip unzip bsdmainutils python3 u
 # Start the server
 #./csgoserver start
 
-# TODO: possible to extend to create systemd config to start the server and enable to startup
-# TODO: possible to add server auto updating with below crontab config by running crontab -e or >> in to file. This needs to be done as csgoserver user.
+# TODO: Possible to extend to create systemd config to start the server and enable to startup.
+# TODO: Possible to add server auto updating with below crontab config by running crontab -e or >> in to file. This needs to be done as csgoserver user.
 # */5 * * * * /home/csgoserver/csgoserver monitor > /dev/null 2>&1
 # */30 * * * * /home/csgoserver/csgoserver update > /dev/null 2>&1
 # 0 0 * * 0 /home/csgoserver/csgoserver update-lgsm > /dev/null 2>&1
