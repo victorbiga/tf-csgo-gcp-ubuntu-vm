@@ -23,6 +23,7 @@ resource "google_compute_instance" "vm_instance_public" {
   boot_disk {
     initialize_params {
       image = var.ubuntu_pro_2204_sku
+      size  = 50 
     }
   }
 
