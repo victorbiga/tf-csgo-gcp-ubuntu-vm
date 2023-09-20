@@ -8,6 +8,10 @@ sudo systemctl enable apache2
 sudo dpkg --add-architecture i386; sudo apt update
 sudo apt install curl wget file tar bzip2 gzip unzip bsdmainutils python3 util-linux ca-certificates binutils bc jq tmux netcat lib32gcc-s1 lib32stdc++6 libsdl2-2.0-0:i386 -yq
 
+# Install google ops-agent
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+
 # Implement non-interactive EULA Accept.
 sudo debconf-set-selections <<EOF
 steam steam/question select I AGREE
@@ -16,16 +20,17 @@ EOF
 sudo apt install steamcmd -yq
 
 # Set iptables to allow port 27015
-iptables -I INPUT 6 -m state --state NEW -p tcp --dport 27015 -j ACCEPT
-iptables -I INPUT 6 -m state --state NEW -p udp --dport 27015 -j ACCEPT
-netfilter-persistent save
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 27015 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 27015 -j ACCEPT
+# TODO: command does not exist
+# netfilter-persistent save
 
 # Add a new user csgoserver. Add command to create password (optional)
 sudo useradd -m -s /bin/bash csgoserver
 
 # Add the user to the sudoers group, then change to the new user
 sudo usermod -aG sudo csgoserver
-su - csgoserver
+sudo -i -u csgoserver
 
 # Get the script to install the cs server
 wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh csgoserver
