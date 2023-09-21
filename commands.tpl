@@ -13,12 +13,6 @@ steam steam/license note
 EOF
 sudo apt install steamcmd -yq
 
-# Set iptables to allow port 27015
-sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 27015 -j ACCEPT
-sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 27015 -j ACCEPT
-# TODO: command does not exist
-# netfilter-persistent save
-
 # Add a new user csgoserver. Add command to create password (optional)
 sudo useradd -m -s /bin/bash csgoserver
 
@@ -36,11 +30,36 @@ wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm
 # non-interactive install
 ./csgoserver auto-install
 
-# Start the server
-#./csgoserver start
+# Add server auto updating
+cat <<EOF >> csgo-cron-jobs
+*/5 * * * * /home/csgoserver/csgoserver monitor > /dev/null 2>&1
+*/30 * * * * /home/csgoserver/csgoserver update > /dev/null 2>&1
+0 0 * * 0 /home/csgoserver/csgoserver update-lgsm > /dev/null 2>&1
+EOF
+crontab csgo-cron-jobs
+rm csgo-cron-jobs
 
-# TODO: Possible to extend to create systemd config to start the server and enable to startup.
-# TODO: Possible to add server auto updating with below crontab config by running crontab -e or >> in to file. This needs to be done as csgoserver user.
-# */5 * * * * /home/csgoserver/csgoserver monitor > /dev/null 2>&1
-# */30 * * * * /home/csgoserver/csgoserver update > /dev/null 2>&1
-# 0 0 * * 0 /home/csgoserver/csgoserver update-lgsm > /dev/null 2>&1
+# Create systemd for csgoserver to start on vm restart
+sudo cat <<EOF >> /etc/systemd/system/csgoserver.service
+[Unit]
+Description=CS:GO Server
+
+[Service]
+Type=simple
+User=your-username
+WorkingDirectory=/home/csgoserver
+ExecStart=/home/csgoserver/csgoserver start
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload systemd to make it aware of the new service unit
+sudo systemctl daemon-reload
+
+# Enable the service to start on boot
+sudo systemctl enable csgoserver.service
+
+# Start csgo server
+sudo systemctl start csgoserver.service
