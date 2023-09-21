@@ -39,27 +39,36 @@ EOF
 crontab csgo-cron-jobs
 rm csgo-cron-jobs
 
+# Start the sever
+/csgoserver start
+
+
+
+
+
+
+################## Below is not implemented ##############
 # Create systemd for csgoserver to start on vm restart
-sudo cat <<EOF >> /etc/systemd/system/csgoserver.service
-[Unit]
-Description=CS:GO Server
+#sudo cat <<EOF >> /etc/systemd/system/csgoserver.service
+#[Unit]
+#Description=CS:GO Server
 
-[Service]
-Type=simple
-User=your-username
-WorkingDirectory=/home/csgoserver
-ExecStart=/home/csgoserver/csgoserver start
-Restart=on-failure
+#[Service]
+#Type=simple
+#User=csgoserver
+#WorkingDirectory=/home/csgoserver
+#ExecStart=/home/csgoserver/csgoserver start
+#Restart=on-failure
 
-[Install]
-WantedBy=multi-user.target
-EOF
+#[Install]
+#WantedBy=multi-user.target
+#EOF
 
 # Reload systemd to make it aware of the new service unit
-sudo systemctl daemon-reload
+#sudo systemctl daemon-reload
 
 # Enable the service to start on boot
-sudo systemctl enable csgoserver.service
+#sudo systemctl enable csgoserver.service
 
 # Start csgo server
-sudo systemctl start csgoserver.service
+#sudo systemctl start csgoserver.service
