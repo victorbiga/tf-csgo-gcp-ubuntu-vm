@@ -22,25 +22,25 @@ resource "google_compute_subnetwork" "network_subnet" {
 ###################################
 
 # Allow http
-resource "google_compute_firewall" "allow-http" {
-  name    = "${var.app_name}-${var.environment}-fw-allow-http"
+resource "google_compute_firewall" "allow-tcp" {
+  name    = "${var.app_name}-${var.environment}-fw-allow-tcp"
   network = google_compute_network.vpc.name
   allow {
     protocol = "tcp"
-    ports    = ["80"]
+    ports    = ["27015"]
   }
 
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["http"]
+  target_tags = ["tcp"]
 }
 
 # allow https
-resource "google_compute_firewall" "allow-https" {
-  name    = "${var.app_name}-${var.environment}-fw-allow-https"
+resource "google_compute_firewall" "allow-udp" {
+  name    = "${var.app_name}-${var.environment}-fw-allow-udp"
   network = google_compute_network.vpc.name
   allow {
-    protocol = "tcp"
-    ports    = ["443"]
+    protocol = "udp"
+    ports    = ["27015"]
   }
 
   source_ranges = ["0.0.0.0/0"]
