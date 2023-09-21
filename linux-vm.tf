@@ -7,7 +7,7 @@ resource "random_id" "instance_id" {
   byte_length = 4
 }
 
-# Bootstrapping Script to Install Apache
+# Bootstrapping Script to Install csgo
 locals {
   commands_template = templatefile("${path.module}/commands.tpl", {})
 }
